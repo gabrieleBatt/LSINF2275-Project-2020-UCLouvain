@@ -8,14 +8,15 @@ from markovTest import markovTest
 ######################################################
 
 SQUARE_N = 15-1
+NORM = 0
 
 SAFETY = 1
 RISKY = 2
 
 N_SUMULATIONS = 100000
 
-#simulates N_SUMULATIONS times with each of this as a starting cell
-STARTING_CELL_LIST = np.array([1,2,14])
+#simulates N_SIMULATIONS times with each of this as a starting cell
+STARTING_CELL_LIST = np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14])
 
 ######################################################
 			
@@ -39,7 +40,7 @@ def playTest(layout, circle, policy, verbose=False, starting_cell_list=[1]):
 options = sys.argv[1:]
 if(len(options) == SQUARE_N + 1):
 	layout = np.array(list(map(int, options[0:SQUARE_N])))
-	circle = (options[SQUARE_N] == 'True' )
+	circle = (options[SQUARE_N] == 'True')
 else:
 	layout = np.array([NORM] * (SQUARE_N))
 	circle = True

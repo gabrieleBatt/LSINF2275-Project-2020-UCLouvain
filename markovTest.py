@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from utils import *
 from markovDecision import markovDecision
 ######################################################
-
+NORM = 0
 SQUARE_N = 15-1
 
 ######################################################
@@ -30,7 +30,7 @@ def markovTest(layout, circle, verbose=False):
 options = sys.argv[1:]
 if(len(options) == SQUARE_N + 1):
 	layout = np.array(list(map(int, options[0:SQUARE_N])))
-	circle = (options[SQUARE_N] == 'True' )
+	circle = (options[SQUARE_N] == 'True')
 else:
 	layout = np.array([NORM] * (SQUARE_N))
 	circle = True
