@@ -1,5 +1,6 @@
 import sys
 import numpy as np
+import matplotlib.pyplot as plt
 from utils import *
 
 def markovDecisionPlot(layout,circle):
@@ -106,8 +107,13 @@ def markovDecisionPlot(layout,circle):
 	#until convergence
 	j = 0
 	old_expec = np.array([0] * SQUARE_N)
+	
+	#values for plot
+	value_list = list()
+	
 	while((abs(old_expec - expec) > PRECISION).any() and j < ITERATIONS):
 		j += 1
+		value_list.append(list(expec))
 		old_expec = np.array(expec)
 		#Update policy
 		##for each square policy
@@ -133,5 +139,14 @@ def markovDecisionPlot(layout,circle):
 				#mystery cost increment
 				expec[i] += PRISON_PENALTY_COST*(1/3)*sum(r_dice[i][:-1]*is_mystery)
 				
-	return (expec, dice)
+	return (np.array(value_list).T,dice)
 	
+
+value_list, dice = markovDecisionPlot([0,1,0,0,3,0,4,0,0,0,0,1,0,3],False)
+    
+colors = [(1,0,0), (0.5,0.5,0), (0,1,0), (0,0.5,0.5), (0,0,1), (0.5,0.5,0.5), (0,0,0), (0.75,0.25,0), (0.25,0.75,0), (0,0.25,0.75), (0,0.75,0.25), (0.5,0,0.5), (0.25,0,0.75), (0.75,0,0.25)]
+for i in range(len(value_list)):
+	plt.plot(np.array(range(1,len(value_list[i])+1)), value_list[i], '--', color = colors[i])
+
+plt.show()
+
