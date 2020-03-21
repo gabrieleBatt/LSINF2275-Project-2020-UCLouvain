@@ -5,7 +5,7 @@ def dump(type, obj):
 	print("*["+type+"]:\n", obj)
 
 	
-	
+#used to check the probability matrices	
 def consistency_check(s_dice, r_dice, id):
 	check_successful = True;
 	for j in range(0, len(s_dice.T[0])):

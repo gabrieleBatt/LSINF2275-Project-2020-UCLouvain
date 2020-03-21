@@ -1,7 +1,17 @@
+#Script Input: layout, circle
+#python playTest.py <layout> <circle>
+#python playTest.py 0 0 1 0 2 0 1 0 2 0 0 0 3 4 True
+#Script Function: computes the optimal cost
+#with markov and plots the cost of each cell
+#at each iteration (one color per cell)
+######################################################
+
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from utils import *
+
+SQUARE_N = 15-1
 
 def markovDecisionPlot(layout,circle):
 	NORM = 0
@@ -9,11 +19,13 @@ def markovDecisionPlot(layout,circle):
 	PNLT = 2
 	PRIS = 3
 	MYST = 4
-
-	SQUARE_N = 15-1
+	
+	ITERATIONS = 1000
+	PRECISION = np.array([1e-2]*SQUARE_N)
+	
 	WRAP_SQUARES = [10-1,14-1]
 	LANE_ENTRY = [11-1,12-1,13-1]
-	
+
 	GO_BACK_PENALTY = 3
 	LANE_CORRECTION = 7
 
@@ -24,10 +36,6 @@ def markovDecisionPlot(layout,circle):
 	RISKY = 2
 
 	INIT_COST = 100.0
-	ITERATIONS = 1000
-	PRECISION = np.array([1e-2]*SQUARE_N)
-
-
 	s_dice = np.array([	
 			[1/2, 1/2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 			[0, 1/2, 1/2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -141,12 +149,22 @@ def markovDecisionPlot(layout,circle):
 				
 	return (np.array(value_list).T,dice)
 	
+#init
+options = sys.argv[1:]
+if(len(options) == SQUARE_N + 1):
+	layout = np.array(list(map(int, options[0:SQUARE_N])))
+	circle = (options[SQUARE_N] == 'True')
+else:
+	layout = np.array([NORM] * (SQUARE_N))
+	circle = True
 
-value_list, dice = markovDecisionPlot([0,1,0,0,3,0,4,0,0,0,0,1,0,3],False)
+	
+value_list, dice = markovDecisionPlot(layout,circle)
     
 colors = [(1,0,0), (0.5,0.5,0), (0,1,0), (0,0.5,0.5), (0,0,1), (0.5,0.5,0.5), (0,0,0), (0.75,0.25,0), (0.25,0.75,0), (0,0.25,0.75), (0,0.75,0.25), (0.5,0,0.5), (0.25,0,0.75), (0.75,0,0.25)]
 for i in range(len(value_list)):
 	plt.plot(np.array(range(1,len(value_list[i])+1)), value_list[i], '--', color = colors[i])
 
+plt.title('Layout: %s - Circle: %s' % (layout, circle))
 plt.show()
 

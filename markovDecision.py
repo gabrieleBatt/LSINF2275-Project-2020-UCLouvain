@@ -2,7 +2,8 @@ import sys
 import numpy as np
 from utils import *
 
-def markovDecisionPlot(layout,circle):
+#computes optimal cost and policy
+def markovDecision(layout,circle):
 	NORM = 0
 	REST = 1
 	PNLT = 2

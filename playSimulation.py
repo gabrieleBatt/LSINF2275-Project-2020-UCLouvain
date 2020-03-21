@@ -3,6 +3,7 @@ import numpy as np
 import random
 from utils import *
 
+#simulates one game and computes the cost of the specified cells
 def playSimulation(layout, circle, policy, starting_cell_list=[1]):
 	NORM = 0
 	REST = 1
