@@ -23,7 +23,7 @@ def markovDecision(layout,circle):
 	SAFETY = 1
 	RISKY = 2
 
-	INIT_COST = 100.0
+	INIT_COST = 100000.0
 	ITERATIONS = 1000
 	PRECISION = np.array([1e-2]*SQUARE_N)
 
@@ -101,7 +101,7 @@ def markovDecision(layout,circle):
 				r_dice[j][i] = r_dice[j][i]*(1/3)
 			
 	#inizialization	
-	expec = np.array([INIT_COST] * SQUARE_N)	
+	expec = np.array([INIT_COST]* SQUARE_N)
 	dice = np.array([SAFETY] * SQUARE_N)
 	
 	#until convergence
@@ -110,29 +110,17 @@ def markovDecision(layout,circle):
 	while((abs(old_expec - expec) > PRECISION).any() and j < ITERATIONS):
 		j += 1
 		old_expec = np.array(expec)
-		#Update policy
 		##for each square policy
 		for i in range(0, len(dice)):
 			#compare dice costs
-			s_cost = sum(s_dice[i][:-1]*expec)
-			r_cost = sum(r_dice[i][:-1]*expec)
+			s_cost = MOVE_COST + sum(s_dice[i][:-1]*expec)
+			r_cost = MOVE_COST + sum(r_dice[i][:-1]*expec) + PRISON_PENALTY_COST*sum(r_dice[i][:-1]*is_prison) + PRISON_PENALTY_COST*(1/3)*sum(r_dice[i][:-1]*is_mystery)
 			if (s_cost < r_cost):
 				dice[i] = SAFETY
+				expec[i] = s_cost
 			else:
 				dice[i] = RISKY
-		#Update cost
-		##for each square cost
-		for i in range(0, len(expec)):
-			#if policy uses safety
-			if(dice[i] == SAFETY):
-				expec[i] = MOVE_COST + sum(s_dice[i][:-1]*expec)
-			#if policy uses risky
-			elif(dice[i] == RISKY):
-				expec[i] = MOVE_COST + sum(r_dice[i][:-1]*expec)
-				#prison cost increment
-				expec[i] += PRISON_PENALTY_COST*sum(r_dice[i][:-1]*is_prison)
-				#mystery cost increment
-				expec[i] += PRISON_PENALTY_COST*(1/3)*sum(r_dice[i][:-1]*is_mystery)
+				expec[i] = r_cost
 				
 	return (expec, dice)
 	
