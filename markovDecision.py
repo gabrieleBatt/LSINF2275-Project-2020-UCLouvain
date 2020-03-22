@@ -24,7 +24,7 @@ def markovDecision(layout, circle):
     SAFETY = 1
     RISKY = 2
 
-    INIT_COST = 100000.0
+    INIT_COST = 100.0
     ITERATIONS = 1000
     PRECISION = np.array([1e-2] * SQUARE_N)
 
