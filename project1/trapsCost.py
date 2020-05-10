@@ -24,7 +24,6 @@ SQUARE_N = 15 - 1
 
 N_ITER = 10000
 
-
 def getIncrements(circle, trap):
 	layout = [NORM]*SQUARE_N
 	policy = [RISKY]*SQUARE_N
@@ -52,6 +51,7 @@ def getIncrements(circle, trap):
 		
 		avg_list.append(avg)
 	return avg_list
+
 	
 pris_avg = getIncrements(False, 3)
 pnlt_avg = getIncrements(False, 2)
@@ -60,6 +60,7 @@ dump("Prisons", pris_avg)
 dump("Penalty", pnlt_avg)	
 dump("Restart", rest_avg)	
 
+#plotting
 plt.bar(np.array(range(len(pris_avg)))-0.2, pris_avg, width=0.2, color='g', label='prison')
 plt.bar(np.array(range(len(pnlt_avg))), pnlt_avg, width=0.2, color='b', label='penalty')
 plt.bar(np.array(range(len(rest_avg)))+0.2, rest_avg, width=0.2, color='r', label='restart')

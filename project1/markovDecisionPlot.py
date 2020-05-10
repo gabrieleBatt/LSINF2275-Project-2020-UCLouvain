@@ -15,7 +15,7 @@ from utils import *
 
 SQUARE_N = 15 - 1
 
-
+#variant of markovDecision to return the values of all iterations
 def markovDecisionPlot(layout, circle):
     NORM = 0
     REST = 1
@@ -161,6 +161,7 @@ else:
     layout = np.array([NORM] * (SQUARE_N))
     circle = True
 
+#plotting
 value_list, dice = markovDecisionPlot(layout, circle)
 
 colors = [(1, 0, 0), (0.5, 0.5, 0), (0, 1, 0), (0, 0.5, 0.5), (0, 0, 1), (0.5, 0.5, 0.5), (0, 0, 0), (0.75, 0.25, 0),
