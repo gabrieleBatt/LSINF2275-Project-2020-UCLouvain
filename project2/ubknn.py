@@ -61,10 +61,3 @@ class ubknn():
  def setK(k):
   self.k = k
 
-
-
-
-model = ubknn(df, 10)
-model.score(1,1)
-model.score(2,2)
-
