@@ -18,7 +18,7 @@ class ubknn():
  
  def __fillNaN(self, df):
   #fill with average rating of user
-  return(df.fillna(df.mean(axis=1)).fillna(df.mean(axis=0)).fillna(0))
+  return(df.apply(lambda row: row.fillna(row.mean()), axis=1))
  
  
  
@@ -29,18 +29,29 @@ class ubknn():
  
  
  
- def __kNNs(self, u, k):
-  return(list(self.S.sort_values([u], ascending = False).head(k).index))
+ def __kNNs(self, u, k, m):
+  usersWhoVoted = self.S.iloc[:,self.Rsparse['%d' % m].dropna().index]
+  if(usersWhoVoted.shape[0] == 0):
+   usersWhoVoted = self.S
+  return(list(usersWhoVoted.sort_values([u], ascending = False).head(k).index))
  
  
  
  def __generateScore(self, u, m):
-  neighbours = self.__kNNs(u, self.k)
+  neighbours = self.__kNNs(u, self.k, m)
   
   similarities = np.array(self.S.iloc[u, neighbours])
   rel_rating = np.array(self.R.iloc[neighbours, m]) - np.array(self.__averageScore(neighbours))
   
+  print("S:\t\t", similarities)
+  print("Ratings:\t", np.array(self.R.iloc[neighbours, m]))
+  print("Avgs:\t\t", np.array(self.__averageScore(neighbours)))
+  print("Relative:\t", rel_rating)
+  
   score = self.__averageScore(u) + np.sum(rel_rating*similarities)/np.sum(similarities)
+  
+  print("Avg score:\t", self.__averageScore(u))
+  print("Score:\t\t", score)
   
   return(score)
  
@@ -48,14 +59,15 @@ class ubknn():
  
  def __averageScore(self, u):
   return(self.R.iloc[:,u].mean(axis=0))
+  
+ 
+ def getRating(self, u, m):
+  return(self.Rsparse.iloc[u,m])
  
  
  
- def score(self, u, m, forceGen=True):
-  if((not math.isnan(self.Rsparse.iloc[u,m])) and (not forceGen)):
-   return(self.Rsparse.iloc[u,m])
-  else:
-   return(self.__generateScore(u, m))
+ def genRating(self, u, m):
+  return(self.__generateScore(u, m))
  
  
  def setK(k):
