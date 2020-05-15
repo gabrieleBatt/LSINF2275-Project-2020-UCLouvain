@@ -12,6 +12,7 @@ df = pd.read_csv("data.csv")
 
 model = ubknn(df, k)
 
+
 err_abs_sum = 0
 err_sum = 0
 err_abs = 0
@@ -27,9 +28,6 @@ for u in range(N_U):
  err_abs = err_abs_sum/count
  err = err_sum/count
  print(u, err, err_abs)
-
-
-
 
 
 

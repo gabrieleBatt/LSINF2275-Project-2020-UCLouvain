@@ -29,22 +29,22 @@ def factorization(M, K, steps=100, a=0.0002, b=0.02):
 
 
 def svd(M, k, rounded=False):
-    mean = np.divide(M.sum(0), (M > 0).sum(0))
-    inds = np.where(M == 0)
-    ratings2 = M.copy()
-    ratings2[inds] = np.take(mean, inds[1])
-
-    P, d, Q = np.linalg.svd(ratings2 - mean, full_matrices=False)
-    d = np.diag(d)
-    P = P[:, 0:k]
-    Q = Q[0:k, :]
-    d = d[0:k, 0:k]
-    d = np.sqrt(d)
-    Pd = np.dot(P, d)
-    dQ = np.dot(d, Q)
-    PdQ = np.dot(Pd, dQ) + mean
-
-    if rounded:
-        return PdQ.round()
-    else:
-        return PdQ
+ mean = np.divide(M.sum(0), (M > 0).sum(0))
+ inds = np.where(M == 0)
+ ratings2 = M.copy()
+ ratings2[inds] = np.take(mean, inds[1])
+ 
+ P, d, Q = np.linalg.svd(ratings2 - mean, full_matrices=False)
+ d = np.diag(d)
+ P = P[:, 0:k]
+ Q = Q[0:k, :]
+ d = d[0:k, 0:k]
+ d = np.sqrt(d)
+ Pd = np.dot(P, d)
+ dQ = np.dot(d, Q)
+ PdQ = np.dot(Pd, dQ) + mean
+ 
+ if rounded:
+  return PdQ.round()
+ else:
+  return PdQ
